@@ -69,11 +69,21 @@ public class ArrayUtility<T> {
     }
 
     public T[] removeValue(T valueToRemove) {
-        List<T> processedList = inputArray
-                .stream()
-                .filter(element -> valueToRemove != element)
-                .collect(Collectors.toList());
-        //T[] processedArray = new
-        return (T[]) processedList.toArray(new Object[processedList.size()]);
+        /*List<T> processedList = */
+        //ArrayList<T> list = (ArrayList<T>) new ArrayList<>(Arrays.asList(inputArray));
+
+//                inputArray.stream()
+//                .filter(element -> valueToRemove != element)
+//                .collect(Collectors.toList());
+//        ArrayList<T>array = new ArrayList<>(Arrays.asList(inputArray));
+
+//                T[]newArray=Arrays.copyOf(inputArray,array.size());
+                //T[] processedArray = Arrays.copyOf(inputArray, processedList.size());
+
+        //return (T[]) processedList.toArray(new Object[processedList.size()]);
+        //new try
+        ArrayList<T> list = new ArrayList<T>((Collection<? extends T>) Arrays.asList(inputArray));
+        list.removeIf(val -> val == valueToRemove);
+        return list.toArray(Arrays.copyOf(inputArray,list.size()));
     }
 }
