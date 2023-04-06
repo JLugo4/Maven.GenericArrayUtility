@@ -22,18 +22,22 @@ public class ArrayUtility<T> {
     }
 
     public Integer countDuplicatesInMerge(T[] arrayToMerge, T valueToEvaluate) {
-        this.inputArray.addAll(Arrays.asList(arrayToMerge));
-        return countDuplicates(valueToEvaluate);
+        T[] mergedArray = (T[]) Stream.concat(Arrays.stream(inputArray.toArray()), Arrays.stream(arrayToMerge))
+                        .toArray(size -> Arrays.copyOf(inputArray.toArray(), size));
+
+        return (int)Arrays.stream(mergedArray)
+                .filter(element ->  Objects.equals(element,valueToEvaluate))
+                .count();
     }
-    private Integer countDuplicates(T item){
-        int count = 0;
-        for(T element : this.input){
-            if(item.equals(element)){
-                count++;
-            }
-        }
-        return count;
-    }
+//    private Integer countDuplicates(T item){
+//        int count = 0;
+//        for(T element : this.input){
+//            if(item.equals(element)){
+//                count++;
+//            }
+//        }
+//        return count;
+//    }
 
     public T getMostCommonFromMerge(T[] arrayToMerge) {
         //this.inputArray.addAll(Arrays.asList(arrayToMerge));
@@ -82,8 +86,14 @@ public class ArrayUtility<T> {
 
         //return (T[]) processedList.toArray(new Object[processedList.size()]);
         //new try
-        ArrayList<T> list = new ArrayList<T>((Collection<? extends T>) Arrays.asList(inputArray));
-        list.removeIf(val -> val == valueToRemove);
-        return list.toArray(Arrays.copyOf(inputArray,list.size()));
+//        ArrayList<T> list = new ArrayList<T>((Collection<? extends T>) Arrays.asList(inputArray));
+//        list.removeIf(val -> val == valueToRemove);
+//        inputArray.toArray();
+//        return list.toArray(Arrays.copyOf(inputArray,list.size()));
+        List<T> processedList = inputArray.stream()
+                .filter(element -> !element.equals(valueToRemove))
+                .collect(Collectors.toList());
+            T[] newArray = (T[]) Array.newInstance(valueToRemove.getClass(), processedList.size());
+        return processedList.toArray(newArray);
     }
 }
